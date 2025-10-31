@@ -50,6 +50,38 @@ button.b{
   font-size: 24px;
 }
 
+.team-section {
+  margin-top: 30px;
+}
+
+.team-section h2 {
+  font-size: 28px;
+  color: #254356;
+  font-weight: 700;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #e0e4e7;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.team-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+}
+
+.team-list li {
+  margin: 10px 0;
+  font-size: 24px;
+}
+
+.team-list a {
+  color: #070c12;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
 #content-container{
   z-index: 2;
   position: relative;
