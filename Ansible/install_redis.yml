@@ -1,7 +1,6 @@
 ---
 - name: Install Redis on backend instance
-#hosts: jke_redisWorker
-  hosts: all
+  hosts: jke_redisWorker
   become: yes
   tasks:
     - name: Check if Redis is already installed
@@ -15,7 +14,7 @@
         state: present 
         update_cache: yes
       when: redis_installed.rc != 0
-      
+
     - name: Ensure Redis is running
       service:
         name: redis-server

@@ -1,18 +1,8 @@
-#[frontend]#
-#jke_bastion ansible_host=<PUBLIC_IP_A>
-
-#[backend]
-#jke_redisWorker  ansible_host=<PRIVATE_IP_B>
-
-#[db]
-#jke_postgress ansible_host=<PRIVATE_IP_C>#
-
-
 [frontend]
-gio_testEC2 ansible_host=54.235.16.225
+jke_bastion ansible_host=<PUBLIC_IP_A>
 
 [backend]
-gio_testEC2  ansible_host=54.235.16.225
+jke_redisWorker ansible_host=<PRIVATE_IP_B>
 
 [db]
-gio_testEC2 ansible_host=54.235.16.225
+jke_postgress ansible_host=<PRIVATE_IP_C>
