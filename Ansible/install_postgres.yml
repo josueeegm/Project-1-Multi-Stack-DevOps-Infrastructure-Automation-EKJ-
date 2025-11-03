@@ -1,13 +1,20 @@
 ---
 - name: Install PostgreSQL on db instance
-  hosts: jke_postgress
+#hosts: jke_redisWorker
+  hosts: all 
   become: yes
-  tasks:
+  tasks: 
+    - name: Check if PostgreSQL is already installed #new add
+      command: psql --version
+      register: postgres_installed
+      ignore_errors: yes
+
     - name: Install PostgreSQL
       apt:
         name: postgresql
         state: present
         update_cache: yes
+      when: postgres_installed.rc != 0 #new add
 
     - name: Ensure PostgreSQL is running
       service:

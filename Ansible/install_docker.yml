@@ -7,10 +7,17 @@
       apt:
         update_cache: yes
 
+    #new add:
+    - name: Check if Docker is already installed
+      command: which docker
+      register: docker_installed
+      ignore_errors: yes
+
     - name: Install Docker
       apt:
         name: docker.io
         state: present
+      when: docker_installed.rc != 0 #new add
 
     - name: Ensure Docker service is running
       service:
