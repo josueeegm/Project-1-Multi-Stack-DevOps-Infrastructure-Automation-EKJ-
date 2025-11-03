@@ -1,0 +1,125 @@
+// SECURITY GROUPS
+
+// Bastion SG (named "vote-result" as requested)
+resource "aws_security_group" "vote_result" {
+  name        = "vote-result"
+  description = "Bastion security group (SSH from anywhere - simple demo)"
+  vpc_id      = var.vpc_id
+
+  // Allow SSH from anywhere (beginner demo - not for production)
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] // very open, for demo only
+  }
+
+  // Allow all outbound traffic
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "vote-result"
+  }
+}
+
+// Redis SG (only allow 6379 from Bastion SG)
+resource "aws_security_group" "redis_worker" {
+  name        = "redisWorker"
+  description = "Redis worker security group"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    description     = "Redis from bastion SG"
+    from_port       = 6379
+    to_port         = 6379
+    protocol        = "tcp"
+    security_groups = [aws_security_group.vote_result.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "redisWorker"
+  }
+}
+
+// Postgres SG (only allow 5432 from Bastion SG)
+// NOTE: you asked "postgress" - we keep the name "postgress" to match your request
+resource "aws_security_group" "postgress" {
+  name        = "postgress"
+  description = "Postgres security group"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    description     = "Postgres from bastion SG"
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.vote_result.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "postgress"
+  }
+}
+
+// INSTANCES
+
+// Bastion instance - public access enabled (simple demo)
+resource "aws_instance" "jke_bastion" {
+  ami                         = var.ami_id
+  instance_type               = var.instance_type_bastion
+  subnet_id                   = var.subnet_id
+  associate_public_ip_address = true
+  vpc_security_group_ids      = [aws_security_group.vote_result.id]
+  key_name                    = var.key_name
+
+  tags = {
+    Name = "jke_bastion"
+  }
+}
+
+// Redis worker instance - no public IP (still in default VPC subnet for now)
+resource "aws_instance" "jke_redisWorker" {
+  ami                         = var.ami_id
+  instance_type               = var.instance_type_redis
+  subnet_id                   = var.subnet_id
+  associate_public_ip_address = false
+  vpc_security_group_ids      = [aws_security_group.redis_worker.id]
+
+  tags = {
+    Name = "jke_redisWorker"
+  }
+}
+
+// Postgres instance - no public IP (still in default VPC subnet for now)
+// NOTE: name kept as "postgress" to match your request
+resource "aws_instance" "jke_postgress" {
+  ami                         = var.ami_id
+  instance_type               = var.instance_type_pg
+  subnet_id                   = var.subnet_id
+  associate_public_ip_address = false
+  vpc_security_group_ids      = [aws_security_group.postgress.id]
+
+  tags = {
+    Name = "jke_postgress"
+  }
+}
