@@ -1,0 +1,16 @@
+
+#########################################################################
+This is a list of variables that need values when you call the module
+#########################################################################
+
+aws-region
+vpc-cidr-block
+public-subnet-cidr-block
+private-subnet-cidr-block
+vpc-name
+private-subnet-name
+public-subnet-name
+public-insatnce-availability-zone
+private-insatnce-availability-zone
+internet-gateway-name
+route-table-name
