@@ -13,7 +13,7 @@
         name: postgresql
         state: present
         update_cache: yes
-      when: postgres_installed.rc != 0 #new add
+      when: postgres_installed.rc != 0 #new add HELLOOOOO
 
     - name: Ensure PostgreSQL is running
       service:
