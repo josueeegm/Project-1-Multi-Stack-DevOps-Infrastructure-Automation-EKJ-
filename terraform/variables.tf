@@ -91,3 +91,15 @@ variable "redis_worker_instance_name" {
   description = "Name of worker and redis instance"
   type = string
 }
+
+variable "nat_elastic_ip" {
+  type = string
+}
+
+variable "aws_nat_gateway" {
+  type = string
+}
+
+variable "private_route_table_name" {
+  type = string
+}
