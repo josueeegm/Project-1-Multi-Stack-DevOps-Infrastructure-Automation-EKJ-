@@ -1,8 +1,8 @@
 [frontend]
-jke_bastion ansible_host=13.235.99.235 #public ip
+jke-bastion-test ansible_host=13.235.99.235 #public ip
 
 [backend]
-jke_redisWorker ansible_host=10.0.2.78 #priv ip
+jke-redisWorker-test ansible_host=10.0.2.78 #priv ip
 
 [db]
-jke_postgress ansible_host=10.0.2.88 #priv ip
+jke-postgress-test ansible_host=10.0.2.88 #priv ip

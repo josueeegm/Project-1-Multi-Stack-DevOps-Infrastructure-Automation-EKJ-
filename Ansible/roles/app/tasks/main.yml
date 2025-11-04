@@ -1,8 +1,4 @@
 ---
-- name: Install Python 3.10+ and Nginx on frontend
-  hosts: jke-bastion-test
-  become: yes
-  tasks:
   - name: Check if Python is already installed
     command: python3 --version
     register: python_installed

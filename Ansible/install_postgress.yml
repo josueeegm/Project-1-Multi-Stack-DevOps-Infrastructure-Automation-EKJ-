@@ -1,6 +1,6 @@
 ---
 - name: Install PostgreSQL on db instance
-  hosts: jke_postgress
+  hosts: jke-postgress-test
   become: yes
   tasks: 
     - name: Check if PostgreSQL is already installed #new add
