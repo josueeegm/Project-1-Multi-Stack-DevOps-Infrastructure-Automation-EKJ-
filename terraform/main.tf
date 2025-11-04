@@ -6,10 +6,10 @@ provider "aws" {
 // Configure backend to store state in the S3 bucket created in 00-bootstrap
 terraform {
   backend "s3" {
-    bucket         = "jke-bucket-test"
+    bucket         = "jke-bucket"
     key            = "tfstate/infra.tfstate" // path/key inside the bucket
     region         = "ap-south-1"            // <-- must match your region
-    dynamodb_table = "jke-test"              // <-- must match the table created in bootstrap
+    dynamodb_table = "jke"              // <-- must match the table created in bootstrap
     encrypt        = true
   }
 }

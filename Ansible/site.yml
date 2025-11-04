@@ -6,20 +6,20 @@
     - docker
 
 - name: Configure .NET and Redis on backend
-  hosts: jke-redisWorker-test
+  hosts: jke-redis-worker
   become: yes
   roles:
     - dotnet
     - redis
 
 - name: Configure PostgreSQL on database
-  hosts: jke-postgress-test
+  hosts: jke-postgres
   become: yes
   roles:
-    - postgresql
+    - postgres
 
 - name: Configure frontend (Python + Nginx)
-  hosts: jke-bastion-test
+  hosts: jke-bastion
   become: yes
   roles:
-    - frontend
+    - app
