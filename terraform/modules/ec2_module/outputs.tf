@@ -12,10 +12,10 @@ output "postgres_private_ip" {
   value = aws_instance.jke_postgress.private_ip
 }
 
-output "sg_ids" {
+/* output "sg_ids" {
   value = {
     vote_result = aws_security_group.vote_result.id
     redisWorker = aws_security_group.redis_worker.id
     postgress   = aws_security_group.postgress.id
   }
-}
+} */
