@@ -1,7 +1,6 @@
 ---
 - name: Install Python 3.10+ and Nginx on frontend
-#hosts: jke_redisWorker
-  hosts: all
+  hosts: jke_bastion
   become: yes
   tasks:
   - name: Check if Python is already installed
@@ -28,7 +27,7 @@
       name: nginx
       state: present
     when: nginx_installed.rc != 0
-    
+
   - name: Ensure Nginx is running
     service:
       name: nginx
