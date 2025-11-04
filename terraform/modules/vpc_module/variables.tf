@@ -53,3 +53,18 @@ variable "route_table_name" {
   type = string
   description = "Name of route table"
 }
+
+variable "nat_elastic_ip" {
+  type = string
+  description = "Name of the NAT Elastic IP"
+}
+
+variable "aws_nat_gateway" {
+  type = string
+  description = "Name of the NAT Gateway"
+}
+
+variable "private_route_table_name" {
+  type = string
+  description = "Name of the private route table"
+}

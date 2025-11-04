@@ -28,6 +28,9 @@ module "vpc_module" {
   private_insatnce_availability_zone = var.private_insatnce_availability_zone
   internet_gateway_name              = var.internet_gateway_name
   route_table_name                   = var.route_table_name
+  nat_elastic_ip                    = var.nat_elastic_ip
+  aws_nat_gateway                    = var.aws_nat_gateway
+  private_route_table_name           = var.private_route_table_name
 }
 
 module "ec2_module" {
@@ -54,4 +57,5 @@ module "ec2_module" {
   bastion_instance_name              = var.bastion_instance_name
   redis_worker_instance_name         = var.redis_worker_instance_name
   postgres_instance_name             = var.postgres_instance_name
+  
 }
