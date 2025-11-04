@@ -1,7 +1,6 @@
 ---
 - name: Install PostgreSQL on db instance
-#hosts: jke_redisWorker
-  hosts: all 
+  hosts: jke_postgress
   become: yes
   tasks: 
     - name: Check if PostgreSQL is already installed #new add
