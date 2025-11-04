@@ -1,39 +1,34 @@
-#configure the AWS provider
-provider "aws" {
-  region = var.aws-region
-}
-
 #create VPC
 resource "aws_vpc" "main" {
-  cidr_block           = var.vpc-cidr-block
+  cidr_block           = var.vpc_cidr_block
   enable_dns_support   = true
   enable_dns_hostnames = true
 
   tags = {
-    Name = var.vpc-name
+    Name = var.vpc_name
   }
 }
 
 #create public subnet for the public instances
 resource "aws_subnet" "public" {
   vpc_id = aws_vpc.main.id
-  cidr_block = var.public-subnet-cidr-block
-  availability_zone = var.public-insatnce-availability-zone
+  cidr_block = var.public_subnet_cidr_block
+  availability_zone = var.public_insatnce_availability_zone
   map_public_ip_on_launch = true
 
   tags = {
-    Name = var.public-subnet-name
+    Name = var.public_subnet_name
   }
 }
 
 #create private subnet for the private instances
 resource "aws_subnet" "private" {
   vpc_id = aws_vpc.main.id
-  cidr_block = var.private-subnet-cidr-block
-  availability_zone = var.private-insatnce-availability-zone
+  cidr_block = var.private_subnet_cidr_block
+  availability_zone = var.private_insatnce_availability_zone
 
   tags = {
-    Name = var.private-subnet-cidr-block
+    Name = var.private_subnet_cidr_block
   }
 }
 
@@ -42,7 +37,7 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = var.internet-gateway-name
+    Name = var.internet_gateway_name
   }
 }
 
@@ -55,7 +50,7 @@ resource "aws_route_table" "public_rt" {
     gateway_id = aws_internet_gateway.igw.id
   }
   tags = {
-    Name = var.route-table-name
+    Name = var.route_table_name
   }
 }
 
