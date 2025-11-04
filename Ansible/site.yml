@@ -1,0 +1,25 @@
+---
+- name: Configure Docker on all instances
+  hosts: all
+  become: yes
+  roles:
+    - docker
+
+- name: Configure .NET and Redis on backend
+  hosts: jke-redisWorker-test
+  become: yes
+  roles:
+    - dotnet
+    - redis
+
+- name: Configure PostgreSQL on database
+  hosts: jke-postgress-test
+  become: yes
+  roles:
+    - postgresql
+
+- name: Configure frontend (Python + Nginx)
+  hosts: jke-bastion-test
+  become: yes
+  roles:
+    - frontend
