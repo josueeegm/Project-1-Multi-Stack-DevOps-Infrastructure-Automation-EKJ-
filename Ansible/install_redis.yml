@@ -1,6 +1,6 @@
 ---
 - name: Install Redis on backend instance
-  hosts: jke_redisWorker
+  hosts: jke-redisWorker-test
   become: yes
   tasks:
     - name: Check if Redis is already installed
