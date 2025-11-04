@@ -1,6 +1,6 @@
 ---
 - name: Install .NET 7 SDK on backend instance_b
-  hosts: jke_redisWorker
+  hosts: jke-redisWorker-test
   become: yes
   tasks:
     - name: Install dependencies

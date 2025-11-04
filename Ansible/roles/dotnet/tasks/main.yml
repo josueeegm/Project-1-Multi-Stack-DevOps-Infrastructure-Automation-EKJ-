@@ -1,0 +1,32 @@
+---
+- name: Install dependencies
+  apt:
+    name:
+      - wget
+      - curl
+    state: present
+
+- name: Check if .NET is already installed
+  command: /root/.dotnet/dotnet --version
+  register: dotnet_installed
+  ignore_errors: yes
+
+- name: Download dotnet-install.sh script
+  get_url:
+    url: https://dot.net/v1/dotnet-install.sh
+    dest: /usr/local/bin/dotnet-install.sh
+    mode: '0755'
+  when: dotnet_installed.rc != 0 #new add
+
+- name: Run dotnet-install.sh to install .NET 7 SDK
+  command: /usr/local/bin/dotnet-install.sh --version 7.0.410
+  args:
+    creates: /root/.dotnet
+  when: dotnet_installed.rc != 0 #new add
+
+- name: Add .NET to PATH for all users
+  lineinfile:
+    path: /etc/profile.d/dotnet.sh
+    create: yes
+    mode: '0755'
+    line: 'export PATH=$PATH:/root/.dotnet'
