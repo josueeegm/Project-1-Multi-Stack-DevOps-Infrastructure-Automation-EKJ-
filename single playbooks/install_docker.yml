@@ -1,6 +1,6 @@
 ---
 - name: Install Docker on all EC2 instances
-  hosts: all   # all the instances
+  hosts:    # all the instances
   become: yes  # execute like root
   tasks:
     - name: Update apt cache

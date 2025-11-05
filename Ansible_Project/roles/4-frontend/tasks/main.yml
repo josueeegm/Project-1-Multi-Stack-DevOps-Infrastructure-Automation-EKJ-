@@ -1,0 +1,16 @@
+---
+- name: Pull vote app image
+  command: docker pull ugindev/voting-app:latest
+
+- name: Pull result app image
+  command: docker pull ugindev/result-app:latest
+
+- name: Run vote app container
+  command: >
+    docker run -d -p 8080:80 --name vote
+    -e REDIS_HOST=10.0.2.51
+    -e REDIS_PORT=6379
+    ugindev/voting-app:latest
+
+- name: Run result app container
+  command: docker run -d -p 8081:80 --name result ugindev/result-app:latest
