@@ -1,0 +1,21 @@
+- name: Update apt cache and upgrade all packages
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Update and upgrade packages
+      become: yes
+      apt:
+        update_cache: yes
+        upgrade: yes
+
+    - name: Install basic utilities
+      apt:
+        name:
+          - curl
+          - git
+          - unzip
+          - apt-transport-https
+          - ca-certificates
+          - software-properties-common
+        state: present
