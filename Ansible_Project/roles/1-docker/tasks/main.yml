@@ -47,3 +47,8 @@
 - name: Display Docker version
   debug:
     msg: "Docker installed successfully: {{ docker_version.stdout }}"
+
+- name: Ensure docker network exists
+  community.docker.docker_network:
+    name: redisworker_network
+    state: present
