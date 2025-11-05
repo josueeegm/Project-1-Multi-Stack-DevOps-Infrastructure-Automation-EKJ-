@@ -5,7 +5,7 @@ provider "aws" {
 
 // Create S3 bucket to store Terraform state
 resource "aws_s3_bucket" "tfstate" {
-  bucket = "jke-bucket"
+  bucket = "jke-bucket-test"
 }
 
 resource "aws_s3_bucket_versioning" "tfstate_versioning" {
@@ -18,7 +18,7 @@ resource "aws_s3_bucket_versioning" "tfstate_versioning" {
 
 // DynamoDB table for state locking (prevents two applies at same time)
 resource "aws_dynamodb_table" "lock" {
-  name         = "jke" // lock table name
+  name         = "jke-test" // lock table name
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
 
@@ -28,6 +28,6 @@ resource "aws_dynamodb_table" "lock" {
   }
 
   tags = {
-    Name = "jke-lock-table"
+    Name = "jke-lock-table-test"
   }
 }
