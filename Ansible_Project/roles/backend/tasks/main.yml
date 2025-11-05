@@ -5,6 +5,11 @@
 - name: Pull worker app image
   command: docker pull ugindev/worker-app:latest
 
+- name: Ensure docker network exists
+  community.docker.docker_network:
+  name: redisworker_network
+  state: present
+  
 - name: Run Redis container with environment variables
   community.docker.docker_container:
     name: redis_server
@@ -14,8 +19,18 @@
     - "6379:6379"
     env:
     REDIS_PASSWORD: "strongpassword"
+    networks:                      
+      - name: redisworker_network
 
-- name: Pull Redis image
-  community.docker.docker_image:
-    name: redis
-    source: pull
+- name: Run worker app container
+      command: >
+        docker run -d --name worker_app
+        --network redisworker_network
+        -e REDIS_HOST={{ hostvars['backend']['ansible_host'] }}
+        -e REDIS_PORT=6379
+        -e DB_HOST={{ hostvars['db']['ansible_host'] }}
+        -e DB_USER=voting_user
+        -e DB_PASSWORD=voting_password
+        -e DB_NAME=voting_db
+        -e DB_PORT=5432
+        ugindev/worker-app:latest
