@@ -1,0 +1,26 @@
+---
+- name: Pull redis and worker images
+  hosts: backend
+  become: yes
+
+  tasks:
+    - name: Pull redis image
+      command: docker pull redis:latest
+
+    - name: Pull worker app image
+      command: docker pull ugindev/worker-app:latest
+
+    - name: Run Redis container with environment variables
+      community.docker.docker_container:
+        name: redis_server
+        image: redis
+        state: started
+        ports:
+        - "6379:6379"
+        env:
+        REDIS_PASSWORD: "strongpassword"
+
+    - name: Pull Redis image
+      community.docker.docker_image:
+        name: redis
+        source: pull
