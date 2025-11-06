@@ -31,7 +31,7 @@
       - "8080:80"
     env:
       REDIS_HOST: 10.0.2.72
-      REDIS_PORT: "6379"
+      REDIS_PORT: "6380"
 
 - name: Run Result app container
   community.docker.docker_container:
