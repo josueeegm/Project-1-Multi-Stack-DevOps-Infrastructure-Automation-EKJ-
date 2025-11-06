@@ -1,21 +1,55 @@
 ---
-- name: Pull redis image
-  command: docker pull redis:latest
+- name: Ensure backend Docker network exists
+  community.docker.docker_network:
+    name: backend-network
+    state: present
 
-- name: Pull worker app image
-  command: docker pull ugindev/worker-app:latest
-
-- name: Run Redis container with environment variables
+- name: Remove old Redis container
   community.docker.docker_container:
-    name: redis_server
-    image: redis
-    state: started
-    ports:
-    - "6379:6379"
-    env:
-    REDIS_PASSWORD: "strongpassword"
+    name: redis
+    state: absent
+  ignore_errors: yes
+
+- name: Remove old Worker container
+  community.docker.docker_container:
+    name: worker
+    state: absent
+  ignore_errors: yes
 
 - name: Pull Redis image
   community.docker.docker_image:
-    name: redis
+    name: redis:alpine
     source: pull
+
+- name: Run Redis container
+  community.docker.docker_container:
+    name: redis
+    image: redis:alpine
+    state: started
+    restart_policy: always
+    networks:
+      - name: backend-network
+    ports:
+      - "6379:6379"
+
+- name: Pull Worker app image
+  community.docker.docker_image:
+    name: ugindev/worker-app:latest
+    source: pull
+
+- name: Run Worker container
+  community.docker.docker_container:
+    name: worker
+    image: ugindev/worker-app:latest
+    state: started
+    restart_policy: always
+    networks:
+      - name: backend-network
+    env:
+      REDIS_HOST: 10.0.2.72
+      REDIS_PORT: "6379"
+      DB_HOST: 10.0.2.178
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      DB_PORT: "5432"
