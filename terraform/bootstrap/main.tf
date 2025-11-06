@@ -1,33 +1,57 @@
-// Very basic AWS provider for bootstrap
+############################################
+# AWS Provider Configuration
+############################################
 provider "aws" {
-  region = var.region
+  region = var.region    # AWS region to deploy backend resources
 }
 
-// Create S3 bucket to store Terraform state
+
+############################################
+# S3 Bucket for Terraform State
+############################################
 resource "aws_s3_bucket" "tfstate" {
-  bucket = "jke-bucket"
+  bucket = "jke-bucket"  # S3 bucket name for Terraform state
+
+  tags = {
+    Name        = "terraform-state-bucket"
+    Environment = "bootstrap"
+  }
 }
 
+# Enable versioning to maintain history of Terraform state files
 resource "aws_s3_bucket_versioning" "tfstate_versioning" {
   bucket = aws_s3_bucket.tfstate.id
 
   versioning_configuration {
-    status = "Enabled"
+    status = "Enabled"   # Ensures state file versions are saved
   }
 }
 
-// DynamoDB table for state locking (prevents two applies at same time)
+# (Optional but recommended) Block all public access to bucket
+resource "aws_s3_bucket_public_access_block" "block_public_access" {
+  bucket                  = aws_s3_bucket.tfstate.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+
+############################################
+# DynamoDB Table for Terraform Locking
+############################################
 resource "aws_dynamodb_table" "lock" {
-  name         = "jke" // lock table name
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "LockID"
+  name         = "jke"                 # Lock table name (referenced in backend config)
+  billing_mode = "PAY_PER_REQUEST"     # On-demand billing mode
+  hash_key     = "LockID"              # Primary key for lock record
 
   attribute {
     name = "LockID"
-    type = "S"
+    type = "S"                         # String type for key
   }
 
   tags = {
-    Name = "jke-lock-table"
+    Name        = "terraform-lock-table"
+    Environment = "bootstrap"
   }
 }
