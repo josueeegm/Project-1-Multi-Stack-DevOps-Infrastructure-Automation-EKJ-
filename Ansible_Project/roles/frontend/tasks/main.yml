@@ -1,16 +1,49 @@
 ---
-- name: Pull vote app image
-  command: docker pull ugindev/voting-app:latest
+- name: Remove old Vote container
+  community.docker.docker_container:
+    name: vote
+    state: absent
+  ignore_errors: yes
 
-- name: Pull result app image
-  command: docker pull ugindev/result-app:latest
+- name: Remove old Result container
+  community.docker.docker_container:
+    name: result
+    state: absent
+  ignore_errors: yes
 
-- name: Run vote app container
-  command: >
-    docker run -d -p 8080:80 --name vote
-    -e REDIS_HOST=10.0.2.51
-    -e REDIS_PORT=6379
-    ugindev/voting-app:latest
+- name: Pull Vote app image
+  community.docker.docker_image:
+    name: ugindev/voting-app:latest
+    source: pull
 
-- name: Run result app container
-  command: docker run -d -p 8081:80 --name result ugindev/result-app:latest
+- name: Pull Result app image
+  community.docker.docker_image:
+    name: ugindev/result-app:latest
+    source: pull
+
+- name: Run Vote app container
+  community.docker.docker_container:
+    name: vote
+    image: ugindev/voting-app:latest
+    state: started
+    restart_policy: always
+    ports:
+      - "8080:80"
+    env:
+      REDIS_HOST: 10.0.2.72
+      REDIS_PORT: "6379"
+
+- name: Run Result app container
+  community.docker.docker_container:
+    name: result
+    image: ugindev/result-app:latest
+    state: started
+    restart_policy: always
+    ports:
+      - "8081:80"
+    env:
+      PG_HOST: 10.0.2.178
+      PG_USER: postgres
+      PG_PASSWORD: postgres
+      PG_DATABASE: postgres
+      PG_PORT: "5432"

@@ -1,20 +1,30 @@
 --- 
-- name: Install PostgreSQL
-  apt:
-    name: postgresql
-    state: present
-
-- name: Start and enable PostgreSQL service
+- name: Stop any local PostgreSQL service
   systemd:
     name: postgresql
-    state: started
-    enabled: yes
+    state: stopped
+  ignore_errors: yes
+
+- name: Remove existing PostgreSQL container
+  community.docker.docker_container:
+    name: postgresdb
+    state: absent
+  ignore_errors: yes
+
+- name: Pull PostgreSQL image
+  community.docker.docker_image:
+    name: postgres:15-alpine
+    source: pull
 
 - name: Run PostgreSQL container
-  command: >
-    docker run -d --name postgresdb
-    -e POSTGRES_USER=voting_user
-    -e POSTGRES_PASSWORD=voting_password
-    -e POSTGRES_DB=voting_db
-    -p 5432:5432
-    postgres:latest
+  community.docker.docker_container:
+    name: postgresdb
+    image: postgres:15-alpine
+    state: started
+    restart_policy: always
+    ports:
+      - "5432:5432"
+    env:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
