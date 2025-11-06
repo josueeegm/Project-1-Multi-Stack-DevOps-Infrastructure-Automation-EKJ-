@@ -110,4 +110,3 @@ variable "redis_worker_instance_name" {
   description = "Name of worker and redis instance"
   type = string
 }
-
