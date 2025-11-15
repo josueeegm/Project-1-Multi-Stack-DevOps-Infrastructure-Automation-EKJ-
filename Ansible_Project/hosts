@@ -1,8 +1,8 @@
 [frontend]
-jke-bastion
+frontend
 
 [backend]
-jke-redis-worker
+backend
 
 [db]
-jke-postgres
+db

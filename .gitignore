@@ -28,3 +28,4 @@ terraform/bootstrap/.terraform/
 terraform/bootstrap/terraform.tfstate
 terraform/bootstrap/terraform.tfstate.backup
 terraform/.terraform.lock.hcl
+.vscode/

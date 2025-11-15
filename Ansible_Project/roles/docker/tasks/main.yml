@@ -13,12 +13,9 @@
   apt:
     update_cache: yes
 
-- name: Install Docker engine
+- name: Install Docker
   apt:
-    name:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
+    name: docker-ce
     state: present
 
 - name: Install Docker Compose
@@ -27,7 +24,7 @@
     dest: /usr/local/bin/docker-compose
     mode: '0755'
 
-- name: Ensure Docker service is started and enabled
+- name: Start and enable Docker service
   systemd:
     name: docker
     state: started
@@ -38,17 +35,3 @@
     name: "{{ ansible_user }}"
     groups: docker
     append: yes
-
-- name: Verify Docker installation
-  command: docker --version
-  register: docker_version
-  changed_when: false
-
-- name: Display Docker version
-  debug:
-    msg: "Docker installed successfully: {{ docker_version.stdout }}"
-
-- name: Ensure docker network exists
-  community.docker.docker_network:
-    name: redisworker_network
-    state: present

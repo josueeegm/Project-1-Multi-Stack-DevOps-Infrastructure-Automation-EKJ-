@@ -6,19 +6,19 @@
     - docker
 
 - name: Deploy backend (Redis + Worker containers)
-  hosts: jke-redis-worker
+  hosts: backend
   become: yes
   roles:
     - backend
 
 - name: Deploy frontend (Vote + Result containers)
-  hosts: jke-bastion
+  hosts: frontend
   become: yes
   roles:
     - frontend
 
 - name: Deploy database (PostgreSQL container)
-  hosts: jke-postgres
+  hosts: db
   become: yes
   roles:
     - database
