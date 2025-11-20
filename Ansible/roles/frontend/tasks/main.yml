@@ -30,8 +30,8 @@
     ports:
       - "8080:80"
     env:
-      REDIS_HOST: 10.0.2.72
-      REDIS_PORT: "6380"
+      REDIS_HOST: 10.0.2.15
+      REDIS_PORT: "6379"
 
 - name: Run Result app container
   community.docker.docker_container:
@@ -42,7 +42,7 @@
     ports:
       - "8081:80"
     env:
-      PG_HOST: 10.0.2.178
+      PG_HOST: 10.0.2.212
       PG_USER: postgres
       PG_PASSWORD: postgres
       PG_DATABASE: postgres

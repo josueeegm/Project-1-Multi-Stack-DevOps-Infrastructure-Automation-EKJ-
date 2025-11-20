@@ -30,7 +30,7 @@
     networks:
       - name: backend-network
     ports:
-      - "6380:6379"
+      - "6379:6379"
 
 - name: Pull Worker app image
   community.docker.docker_image:
@@ -46,9 +46,9 @@
     networks:
       - name: backend-network
     env:
-      REDIS_HOST: 10.0.2.72
-      REDIS_PORT: "6380"
-      DB_HOST: 10.0.2.178
+      REDIS_HOST: 10.0.2.15
+      REDIS_PORT: "6379"
+      DB_HOST: 10.0.2.212
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
